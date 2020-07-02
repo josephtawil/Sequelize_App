@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
-console.log(db);
-router.get("/all", (req, res) => {
+const up = require("../migrations/20200702090933-word");
+// console.log(db);
+router.get("/all", async (req, res) => {
     //Todo is the name of the table created in the todo models file
-    db.Todo.findAll().then((todos) => res.send(todos)).catch((err) => res.send(err));
+    // db.Todo.findAll().then((todos) => res.send(todos))catch((err) => res.send(err));
+    try {
+        const todo = await db.Todo.findAll()
+        res.send(todo);
+    }
+    catch{
+        res.send({ message: "error" });
+    }
 });
 
 router.get("/find/:id", (req, res) => {
@@ -18,7 +26,6 @@ router.get("/find/:id", (req, res) => {
 });
 
 router.post("/new", (req, res) => {
-
     db.Todo.create(
         {
             text: req.body.text,
