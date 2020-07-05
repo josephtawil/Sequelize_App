@@ -1,6 +1,7 @@
 'use strict';
 
 const { query } = require("express");
+const { STRING } = require("sequelize");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -11,6 +12,8 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.createTable('done', { completed: Sequelize.BOOLEAN });
+    await queryInterface.createTable("student", { fname: Sequelize.STRING });
+    await queryInterface.addColumn("Todos", "text", { type: Sequelize.STRING, allowNull: false });
     await queryInterface.renameColumn("Todos", "text", "word");
   },
 
@@ -21,7 +24,8 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+    await queryInterface.dropTable('done');
     await queryInterface.renameColumn("Todos", "word", "text");
-    // await queryInterface.dropTable("done");
+
   }
 };
